@@ -5,14 +5,22 @@
  */
 package org.miage.hadl.m2;
 
+import java.util.List;
+
 /**
  *
- * @author Cyril
+ * @author Cyril LD
  */
-public abstract class PortConfiguration implements InterfaceCommunication {
+public abstract class Composant implements Element {
 
     /**
-     * Référence sur l'élément père
+     * Référence sur le père
      */
     protected Element pere;
+
+    /**
+     * Liste des ports internes au système offerts par le composant
+     */
+    protected List<PortInterne> ports;
+
 }

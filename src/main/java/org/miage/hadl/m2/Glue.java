@@ -7,12 +7,22 @@ package org.miage.hadl.m2;
 
 /**
  *
- * @author Cyril
+ * @author Cyril LD
  */
-public abstract class PortConfiguration implements InterfaceCommunication {
+public abstract class Glue {
 
     /**
-     * Référence sur l'élément père
+     * Référence sur le père
      */
     protected Element pere;
+
+    /**
+     * Rôle en entrée de la glue
+     */
+    protected Role roleEntree;
+
+    /**
+     * Rôle en sortie de la glue
+     */
+    protected Role roleSortie;
 }

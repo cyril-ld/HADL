@@ -1,4 +1,4 @@
-package org.miage.hadl.m2;
+package org.miage.hadl.m2.enums;
 
 /**
  *

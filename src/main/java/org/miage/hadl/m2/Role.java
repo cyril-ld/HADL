@@ -6,13 +6,10 @@
 package org.miage.hadl.m2;
 
 /**
+ * Un rôle est une interface spécialisée permettant à un connecteur d'être utilisé par des composants du système.
  *
- * @author Cyril
+ * @author Cyril LD
  */
-public abstract class PortConfiguration implements InterfaceCommunication {
+public abstract class Role extends PortInterne {
 
-    /**
-     * Référence sur l'élément père
-     */
-    protected Element pere;
 }

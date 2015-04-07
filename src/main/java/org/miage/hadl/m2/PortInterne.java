@@ -11,4 +11,8 @@ package org.miage.hadl.m2;
  */
 public abstract class PortInterne implements InterfaceCommunication {
 
+    /**
+     * Référence sur l'élément père
+     */
+    protected Element pere;
 }
