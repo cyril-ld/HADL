@@ -5,23 +5,27 @@
  */
 package org.miage.hadl.m2;
 
-import org.miage.hadl.transverse.Message;
-
 /**
  * Un rôle est une interface spécialisée permettant à un connecteur d'être utilisé par des composants du système.
  *
  * @author Cyril LD
  */
-public abstract class Role extends PortInterne {
-
-    public Role(Composant p_oPere) {
-        super(p_oPere);
-    }
+public abstract class Role implements InterfaceCommunication {
 
     /**
-     * Méthode appelée lorsqu'un message est reçu
-     *
-     * @param message - Le message reçu
+     * Glue qui permet de faire l'interface avec le connecteur
      */
-    public abstract void messageRecu(Message message);
+    protected Glue pere;
+
+    /**
+     * Constructeur
+     *
+     * @param p_oPere - La glue liant le rôle au connecteur
+     */
+    public Role(Glue p_oPere) {
+        if (p_oPere == null) {
+            throw new IllegalArgumentException("Le père ne peut pas être nul pour le Role !");
+        }
+        this.pere = p_oPere;
+    }
 }

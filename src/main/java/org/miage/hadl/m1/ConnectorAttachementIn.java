@@ -6,9 +6,10 @@
 package org.miage.hadl.m1;
 
 import org.miage.hadl.m2.Attachement;
-import org.miage.hadl.m2.Element;
+import org.miage.hadl.m2.Configuration;
 import org.miage.hadl.m2.PortInterne;
 import org.miage.hadl.m2.Role;
+import org.miage.hadl.transverse.Message;
 
 /**
  * Matérialise l'attachement dont le rôle est de transmettre l'information au connecteur.
@@ -24,10 +25,15 @@ public class ConnectorAttachementIn extends Attachement {
      * @param p_oPortInterne
      * @param p_oRole
      */
-    public ConnectorAttachementIn(Element p_oPere, PortInterne p_oPortInterne, Role p_oRole) {
+    public ConnectorAttachementIn(Configuration p_oPere, PortInterne p_oPortInterne, Role p_oRole) {
         super(p_oPere);
         this.port = p_oPortInterne;
         this.role = p_oRole;
+    }
+
+    @Override
+    public void transmettreMessage(Message message) {
+        this.role.transmettreMessage(message);
     }
 
 }

@@ -39,7 +39,7 @@ public abstract class Composant implements Element {
     public abstract void messageReçu(Message message);
 
     @Override
-    public Element getFather() {
+    public Configuration getFather() {
         return this.pere;
     }
 

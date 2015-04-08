@@ -5,9 +5,10 @@
  */
 package org.miage.hadl.m1;
 
-import org.miage.hadl.m2.Element;
+import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.PortInterne;
 import org.miage.hadl.m2.enums.PORT_TYPE;
+import org.miage.hadl.transverse.Message;
 
 /**
  *
@@ -15,8 +16,22 @@ import org.miage.hadl.m2.enums.PORT_TYPE;
  */
 public class PortFourni extends PortInterne {
 
-    public PortFourni(Element p_oPere) {
-        this.pere = p_oPere;
+    private Message message;
+
+    public PortFourni(Composant p_oPere) {
+        super(p_oPere);
         this.typePort = PORT_TYPE.PORT_FOURNI;
     }
+
+    @Override
+    public void transmettreMessage(Message p_oMessage) {
+        this.message = p_oMessage;
+        this.getPere().getFather().faireSuivreMessage(this);
+    }
+
+    @Override
+    public Message getMessage() {
+        return this.message;
+    }
+
 }

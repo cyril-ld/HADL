@@ -50,7 +50,7 @@ public abstract class Attachement implements Element {
      *
      * @param message
      */
-    public abstract void messageRecu(Message message);
+    public abstract void transmettreMessage(Message message);
 
     @Override
     public Element getFather() {
@@ -67,4 +67,11 @@ public abstract class Attachement implements Element {
         this.pere = (Configuration) p_oPere;
     }
 
+    public PortInterne getPort() {
+        return port;
+    }
+
+    public Role getRole() {
+        return role;
+    }
 }

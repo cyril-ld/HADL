@@ -15,6 +15,15 @@ public class Message {
     private String content;
 
     /**
+     * Créé une instance de message avec le contenu passé en paramètre
+     *
+     * @param content - Le corps du message
+     */
+    public Message(String content) {
+        this.content = content;
+    }
+
+    /**
      * @return the content
      */
     public String getContent() {

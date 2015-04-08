@@ -6,7 +6,6 @@
 package org.miage.hadl.m2;
 
 import org.miage.hadl.m2.enums.PORT_TYPE;
-import org.miage.hadl.transverse.Message;
 
 /**
  *
@@ -49,11 +48,4 @@ public abstract class PortConfiguration implements InterfaceCommunication {
     public void setPere(Configuration pere) {
         this.pere = pere;
     }
-
-    /**
-     * Méthode appelée lorsqu'un message est reçu
-     *
-     * @param message - Le message reçu
-     */
-    public abstract void messageRecu(Message message);
 }

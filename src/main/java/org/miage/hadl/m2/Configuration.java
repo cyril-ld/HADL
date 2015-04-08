@@ -24,7 +24,7 @@ public abstract class Configuration implements Element {
     /**
      * Elements de la configuration
      */
-    private List<Element> elements;
+    protected List<Element> elements;
 
     /**
      * Référence sur l'élément père
@@ -34,7 +34,7 @@ public abstract class Configuration implements Element {
     /**
      * Ports de la configuration, lui permettant de dialoguer avec d'autres systèmes
      */
-    private List<PortConfiguration> portsConfiguration;
+    protected List<PortConfiguration> portsConfiguration;
 
     /**
      * Permet de savoir si la configuration est l'élément racine.
@@ -63,6 +63,45 @@ public abstract class Configuration implements Element {
         element.setFather(this);
 
         this.elements.add(element);
+    }
+
+    /**
+     * Créé et stocke un attachement reliant p_oPort et p_oRole. Ces attachements permettront de faire le lien entre les
+     * composants et les connecteurs lorsque les ports recevront des messages (ils ne doivent pas résoudrent tout seul
+     * le rôle à qui transférer le message).
+     *
+     * @param p_oPort - end point de communication composant
+     * @param p_oRole - end point de communication connecteur
+     */
+    public abstract void addAttachement(PortInterne p_oPort, Role p_oRole);
+
+    /**
+     * Fait suivre le message à l'interface de communication rattachée à la source passée en paramètre. Le binding se
+     * fait par un parcours des Attachements stockés dans la configuration.
+     *
+     * @param p_oSource - L'objet source ayant reçu un message
+     */
+    public void faireSuivreMessage(InterfaceCommunication p_oSource) {
+
+        Attachement attachement;
+
+        // Parcours des attachement
+        for (Element item : this.elements) {
+            if (item.getClass() == Attachement.class) {
+                attachement = (Attachement) item;
+
+                // On cherche si la source est bindée par l'attachement d'un côté ou de l'autre et on lui forward le message
+                if (attachement.getRole() == p_oSource) {
+                    attachement.getPort().transmettreMessage(p_oSource.getMessage());
+                    System.out.println("Je suis" + this.nom + ", je fais suivre un message sur un composant !");
+                    break;
+                } else if (attachement.getPort() == p_oSource) {
+                    attachement.getRole().transmettreMessage(p_oSource.getMessage());
+                    System.out.println("Je suis " + this.nom + ", je fais suivre un message sur un connecteur !");
+                    break;
+                }
+            }
+        }
     }
 
     /**

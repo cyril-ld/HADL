@@ -54,5 +54,5 @@ public abstract class Glue {
      *
      * @param message - Le message reçu
      */
-    public abstract void messageRecu(Message message);
+    public abstract void transfererMessage(Message message);
 }

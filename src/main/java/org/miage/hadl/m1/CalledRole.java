@@ -5,31 +5,31 @@
  */
 package org.miage.hadl.m1;
 
-import org.miage.hadl.m2.Composant;
-import org.miage.hadl.m2.PortInterne;
-import org.miage.hadl.m2.enums.PORT_TYPE;
+import org.miage.hadl.m2.Glue;
+import org.miage.hadl.m2.Role;
 import org.miage.hadl.transverse.Message;
 
 /**
  *
  * @author Cyril LD
  */
-public class PortRequis extends PortInterne {
+public class CalledRole extends Role {
 
     private Message message;
 
-    public PortRequis(Composant p_oPere) {
+    public CalledRole(Glue p_oPere) {
         super(p_oPere);
-        this.typePort = PORT_TYPE.PORT_REQUIS;
     }
 
     @Override
     public void transmettreMessage(Message message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.message = message;
+        this.pere.transfererMessage(message);
     }
 
     @Override
     public Message getMessage() {
         return this.message;
     }
+
 }

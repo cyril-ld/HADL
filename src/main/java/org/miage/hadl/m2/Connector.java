@@ -45,7 +45,7 @@ public abstract class Connector implements Element {
     public abstract void messageRecu(Message message);
 
     @Override
-    public Element getFather() {
+    public Configuration getFather() {
         return this.pere;
     }
 

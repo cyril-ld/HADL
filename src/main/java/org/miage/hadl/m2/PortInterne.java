@@ -6,7 +6,6 @@
 package org.miage.hadl.m2;
 
 import org.miage.hadl.m2.enums.PORT_TYPE;
-import org.miage.hadl.transverse.Message;
 
 /**
  *
@@ -24,23 +23,17 @@ public abstract class PortInterne implements InterfaceCommunication {
      */
     protected PORT_TYPE typePort;
 
+    /**
+     * Constructeur
+     *
+     * @param p_oPere - Le composant utilisant le port
+     */
     public PortInterne(Composant p_oPere) {
         if (p_oPere == null) {
             throw new IllegalArgumentException("Le père ne peut pas être nul pour le port interne !");
         }
         this.pere = p_oPere;
     }
-
-    /**
-     * Méthode appelée lorsque le port reçoit un message.
-     * Lorsque le port est un port fourni, la méthode doit se charger de récupérer auprès de la configuration
-     * l'attachement avec lequel elle va dialoguer.
-     * Dans le cas d'un port requis, recevant le message depuis l'attachement, il suffit de remonter l'info au composant
-     * père.
-     *
-     * @param message
-     */
-    public abstract void receiveMessage(Message message);
 
     /**
      * @return the pere
