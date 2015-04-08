@@ -5,23 +5,16 @@
  */
 package org.miage.hadl.m1;
 
+import org.miage.hadl.m2.Configuration;
 import org.miage.hadl.m2.Connector;
-import org.miage.hadl.m2.Glue;
-import org.miage.hadl.transverse.Message;
 
 /**
  *
  * @author Cyril LD
  */
-public class GlueIn extends Glue {
+public class RPCConnector extends Connector {
 
-    public GlueIn(Connector p_oPere) {
+    public RPCConnector(Configuration p_oPere) {
         super(p_oPere);
     }
-
-    @Override
-    public void transfererMessage(Message message) {
-        this.roleSortie.transmettreMessage(message);
-    }
-
 }

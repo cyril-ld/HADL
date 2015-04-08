@@ -17,17 +17,21 @@ import org.miage.hadl.m2.Role;
  *
  * @author Cyril LD
  */
-public class BigCS extends Configuration {
+public class ConfigurationImpl extends Configuration {
 
-    public BigCS(Configuration p_oPere, String p_sNom, List<PortConfiguration> p_cPortsConfiguration, List<Element> p_cElements) {
+    public ConfigurationImpl(Configuration p_oPere, String p_sNom, List<PortConfiguration> p_cPortsConfiguration, List<Element> p_cElements) {
         super(p_oPere, p_sNom, p_cPortsConfiguration, p_cElements);
+    }
+
+    public ConfigurationImpl(String p_sNom) {
+        super(p_sNom);
     }
 
     @Override
     public void addAttachement(PortInterne p_oPort, Role p_oRole) {
         Attachement attachement;
 
-        attachement = new ConnectorAttachementIn(this, p_oPort, p_oRole);
+        attachement = new ConnectorAttachement(this, p_oPort, p_oRole);
         this.addElement(attachement);
     }
 }

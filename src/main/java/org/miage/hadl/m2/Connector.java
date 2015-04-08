@@ -5,8 +5,8 @@
  */
 package org.miage.hadl.m2;
 
+import java.util.ArrayList;
 import java.util.List;
-import org.miage.hadl.transverse.Message;
 
 /**
  * Un connecteur permet de faire dialoguer des composants entre eux. Il se compose principalement de glue et
@@ -27,6 +27,7 @@ public abstract class Connector implements Element {
     private Configuration pere;
 
     /**
+     * Constructeur minimal
      *
      * @param p_oPere
      */
@@ -35,14 +36,22 @@ public abstract class Connector implements Element {
             throw new IllegalArgumentException("Le père ne peut pas être nul pour le connecteur !");
         }
         this.pere = p_oPere;
+        this.glues = new ArrayList<>();
     }
 
     /**
-     * Méthode appelée lorsqu'un message est reçu
+     * Constructeur.
      *
-     * @param message - Le message reçu
+     * @param p_oPere
+     * @param p_cGlues
      */
-    public abstract void messageRecu(Message message);
+    public Connector(Configuration p_oPere, List<Glue> p_cGlues) {
+        if (p_oPere == null) {
+            throw new IllegalArgumentException("Le père ne peut pas être nul pour le connecteur !");
+        }
+        this.pere = p_oPere;
+        this.glues = p_cGlues;
+    }
 
     @Override
     public Configuration getFather() {
@@ -57,5 +66,15 @@ public abstract class Connector implements Element {
             throw new IllegalArgumentException("Le père du connecteur doit être une configuration !");
         }
         this.pere = (Configuration) p_oPere;
+    }
+
+    /**
+     * Permet d'ajouter une glue dans la collection de glues
+     *
+     * @param p_oGlue
+     */
+    public void ajouterGlue(Glue p_oGlue) {
+        p_oGlue.setPere(this);
+        this.glues.add(p_oGlue);
     }
 }

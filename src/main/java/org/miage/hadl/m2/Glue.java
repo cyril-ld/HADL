@@ -49,6 +49,22 @@ public abstract class Glue {
         this.pere = pere;
     }
 
+    public Role getRoleEntree() {
+        return roleEntree;
+    }
+
+    public void setRoleEntree(Role roleEntree) {
+        this.roleEntree = roleEntree;
+    }
+
+    public Role getRoleSortie() {
+        return roleSortie;
+    }
+
+    public void setRoleSortie(Role roleSortie) {
+        this.roleSortie = roleSortie;
+    }
+
     /**
      * Méthode appelée lorsqu'un message est reçu
      *

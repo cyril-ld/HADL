@@ -133,6 +133,18 @@ public abstract class Configuration implements Element {
     }
 
     /**
+     * Constructeur minimal. La configuration doit avoir un nom.
+     *
+     * @param p_sNom - Le nom de la configuration
+     */
+    public Configuration(String p_sNom) {
+        this.nom = p_sNom;
+        this.portsConfiguration = new ArrayList<>();
+        this.elements = new ArrayList<>();
+        this.pere = null;
+    }
+
+    /**
      * @return the elements
      */
     public List<Element> getElements() {

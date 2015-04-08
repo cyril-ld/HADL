@@ -5,6 +5,7 @@
  */
 package org.miage.hadl.m2;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.miage.hadl.transverse.Message;
 
@@ -29,6 +30,7 @@ public abstract class Composant implements Element {
             throw new IllegalArgumentException("Le père ne peut pas être nul pour le composant !");
         }
         this.pere = p_oPere;
+        this.ports = new ArrayList<>();
     }
 
     /**
@@ -51,5 +53,13 @@ public abstract class Composant implements Element {
             throw new IllegalArgumentException("Le père d'un composant ne peut être qu'une configuration !");
         }
         this.pere = (Configuration) p_oPere;
+    }
+
+    public void addPort(PortInterne p_oPort) {
+        if (this.ports == null) {
+            this.ports = new ArrayList<>();
+        }
+        p_oPort.setPere(this);
+        this.ports.add(p_oPort);
     }
 }

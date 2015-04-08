@@ -5,8 +5,6 @@
  */
 package org.miage.hadl.m2;
 
-import org.miage.hadl.transverse.Message;
-
 /**
  * Un attachement a pour but de faire le lien entre un port de composant (interne) et un port de connecteur réprésenté
  * par un rôle (Caller / Called).
@@ -41,16 +39,6 @@ public abstract class Attachement implements Element {
         }
         this.pere = p_oPere;
     }
-
-    /**
-     * Méthode utilisée pour traiter l'arrivée d'un message. L'élément doit en référer à son père (la configuration)
-     * pour récupérer port ou rôle en fonction du sens du message.
-     * Composant vers connecteur = rôle
-     * Connecteur vers composant = Port
-     *
-     * @param message
-     */
-    public abstract void transmettreMessage(Message message);
 
     @Override
     public Element getFather() {

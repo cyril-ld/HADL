@@ -23,6 +23,7 @@ public class CalledRole extends Role {
 
     @Override
     public void transmettreMessage(Message message) {
+        System.out.println("Je suis un role appelé, je viens de récupérer le message !");
         this.message = message;
         this.pere.transfererMessage(message);
     }

@@ -15,7 +15,11 @@ import org.miage.hadl.transverse.Message;
  *
  * @author Cyril LD
  */
-public class Client extends Composant {
+public class Serveur extends Composant {
+
+    public Serveur(Configuration p_oPere) {
+        super(p_oPere);
+    }
 
     /**
      * Construit un composant avec une configuration minimale.
@@ -24,7 +28,7 @@ public class Client extends Composant {
      * @param p_oPortFourni - Un port interne qui sert de port fourni
      * @param p_oPortRequis - Un port interne qui sert de port requis
      */
-    public Client(Configuration p_oPere, PortFourni p_oPortFourni, PortRequis p_oPortRequis) {
+    public Serveur(Configuration p_oPere, PortFourni p_oPortFourni, PortRequis p_oPortRequis) {
         super(p_oPere);
         p_oPortFourni.setPere(this);
         p_oPortRequis.setPere(this);
@@ -35,26 +39,21 @@ public class Client extends Composant {
 
     @Override
     public void messageReçu(Message message) {
-        System.out.println("Youpi j'ai bien reçu la réponse à ma demande, elle est : " + message.getContent());
+        System.out.println("Je suis le serveur light, je viens de recevoir le message : " + message.getContent());
+        this.sendMessage("Il fera beau demain !");
     }
 
-    /**
-     * Méthode permettant d'envoyer un message.
-     * Pour envoyer un message, il suffit de le transmettre à son port fourni.
-     *
-     * @param p_sMessage - Le message à envoyer !
-     */
     public void sendMessage(String p_sMessage) {
-
         PortFourni portEnvoi;
 
         for (PortInterne item : this.ports) {
             if (item.getClass() == PortFourni.class) {
                 portEnvoi = (PortFourni) item;
                 portEnvoi.transmettreMessage(new Message(p_sMessage));
-                System.out.println("Je suis un client, j'envoie un message !");
+                System.out.println("Je suis un le serveur light, je réponds au message !");
                 break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
             }
         }
     }
+
 }
