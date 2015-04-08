@@ -22,10 +22,11 @@ import org.miage.hadl.m2.Connector;
 import org.miage.hadl.m2.Glue;
 
 /**
+ * Permet de lancer la configuration BigCS avec le serveur en tant que composant.
  *
  * @author Cyril LD
  */
-public class Launcher {
+public class LauncherServeurComposant {
 
     public static void main(String... params) {
 
