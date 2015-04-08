@@ -23,7 +23,7 @@ public class CallerRole extends Role {
 
     @Override
     public void transmettreMessage(Message message) {
-        System.out.println("Je suis un role appelant, je vais demander à la config de faire suivre le message !");
+        System.out.println("Je suis un role appelant, je demande à la config un attachement !");
         this.message = message;
         this.pere.getPere().getFather().faireSuivreMessage(this);
     }

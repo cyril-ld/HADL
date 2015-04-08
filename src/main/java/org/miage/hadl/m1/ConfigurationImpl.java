@@ -31,7 +31,7 @@ public class ConfigurationImpl extends Configuration {
     public void addAttachement(PortInterne p_oPort, Role p_oRole) {
         Attachement attachement;
 
-        attachement = new ConnectorAttachement(this, p_oPort, p_oRole);
+        attachement = new AttachementImpl(this, p_oPort, p_oRole);
         this.addElement(attachement);
     }
 }

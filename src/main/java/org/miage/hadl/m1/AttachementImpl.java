@@ -15,7 +15,7 @@ import org.miage.hadl.m2.Role;
  *
  * @author Cyril LD
  */
-public class ConnectorAttachement extends Attachement {
+public class AttachementImpl extends Attachement {
 
     /**
      * Appelé par la configuration qui branche les différents morceaux entre eux
@@ -24,7 +24,7 @@ public class ConnectorAttachement extends Attachement {
      * @param p_oPortInterne
      * @param p_oRole
      */
-    public ConnectorAttachement(Configuration p_oPere, PortInterne p_oPortInterne, Role p_oRole) {
+    public AttachementImpl(Configuration p_oPere, PortInterne p_oPortInterne, Role p_oRole) {
         super(p_oPere);
         this.port = p_oPortInterne;
         this.role = p_oRole;

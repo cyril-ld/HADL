@@ -25,7 +25,9 @@ public class PortRequis extends PortInterne {
 
     @Override
     public void transmettreMessage(Message message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Je suis un port requis, je viens de récupérer le message !");
+        this.message = message;
+        this.getPere().messageReçu(message);
     }
 
     @Override

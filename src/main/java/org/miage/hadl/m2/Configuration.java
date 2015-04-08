@@ -87,17 +87,17 @@ public abstract class Configuration implements Element {
 
         // Parcours des attachement
         for (Element item : this.elements) {
-            if (item.getClass() == Attachement.class) {
+            if (item.getClass().getSuperclass() == Attachement.class) {
                 attachement = (Attachement) item;
 
                 // On cherche si la source est bindée par l'attachement d'un côté ou de l'autre et on lui forward le message
                 if (attachement.getRole() == p_oSource) {
+                    System.out.println("Je suis la Configuration " + this.nom + ", je fais suivre un message sur un composant déterminé via l'attachement !");
                     attachement.getPort().transmettreMessage(p_oSource.getMessage());
-                    System.out.println("Je suis" + this.nom + ", je fais suivre un message sur un composant !");
                     break;
                 } else if (attachement.getPort() == p_oSource) {
+                    System.out.println("Je suis la Configuration " + this.nom + ", je fais suivre un message sur un connecteur déterminé via l'attachement !");
                     attachement.getRole().transmettreMessage(p_oSource.getMessage());
-                    System.out.println("Je suis " + this.nom + ", je fais suivre un message sur un connecteur !");
                     break;
                 }
             }

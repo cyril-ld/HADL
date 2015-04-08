@@ -21,6 +21,7 @@ public class GlueImpl extends Glue {
 
     @Override
     public void transfererMessage(Message message) {
+        System.out.println("Je suis la Glue, je transfère le message sur le rôle sortant !");
         this.roleSortie.transmettreMessage(message);
     }
 

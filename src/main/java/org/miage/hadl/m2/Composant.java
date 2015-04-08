@@ -49,12 +49,17 @@ public abstract class Composant implements Element {
     public void setFather(Element p_oPere) {
         if (p_oPere == null) {
             throw new IllegalArgumentException("Le père ne peut pas être nul pour le composant !");
-        } else if (p_oPere.getClass() != Configuration.class) {
+        } else if (p_oPere.getClass().getSuperclass() != Configuration.class) {
             throw new IllegalArgumentException("Le père d'un composant ne peut être qu'une configuration !");
         }
         this.pere = (Configuration) p_oPere;
     }
 
+    /**
+     * Permet d'ajouter un port à postériori.
+     *
+     * @param p_oPort - Le port à ajouter
+     */
     public void addPort(PortInterne p_oPort) {
         if (this.ports == null) {
             this.ports = new ArrayList<>();

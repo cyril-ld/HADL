@@ -5,7 +5,6 @@
  */
 package org.miage.hadl.m1;
 
-import java.util.ArrayList;
 import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.Configuration;
 import org.miage.hadl.m2.PortInterne;
@@ -18,19 +17,12 @@ import org.miage.hadl.transverse.Message;
 public class Client extends Composant {
 
     /**
-     * Construit un composant avec une configuration minimale.
+     * Constructeur minimal
      *
-     * @param p_oPere       - La configuration dans laquelle se place le composant
-     * @param p_oPortFourni - Un port interne qui sert de port fourni
-     * @param p_oPortRequis - Un port interne qui sert de port requis
+     * @param p_oPere
      */
-    public Client(Configuration p_oPere, PortFourni p_oPortFourni, PortRequis p_oPortRequis) {
+    public Client(Configuration p_oPere) {
         super(p_oPere);
-        p_oPortFourni.setPere(this);
-        p_oPortRequis.setPere(this);
-        this.ports = new ArrayList<>();
-        this.ports.add(p_oPortFourni);
-        this.ports.add(p_oPortRequis);
     }
 
     @Override
@@ -51,8 +43,8 @@ public class Client extends Composant {
         for (PortInterne item : this.ports) {
             if (item.getClass() == PortFourni.class) {
                 portEnvoi = (PortFourni) item;
+                System.out.println("Je suis un client, je veux savoir le temps qu'il fera demain !");
                 portEnvoi.transmettreMessage(new Message(p_sMessage));
-                System.out.println("Je suis un client, j'envoie un message !");
                 break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
             }
         }
