@@ -12,12 +12,12 @@ import org.miage.hadl.m1.CallerRole;
 import org.miage.hadl.m1.Client;
 import org.miage.hadl.m1.ConfigurationImpl;
 import org.miage.hadl.m1.ConnectionManager;
+import org.miage.hadl.m1.ConnectorImpl;
 import org.miage.hadl.m1.GlueImpl;
 import org.miage.hadl.m1.PortConfigurationFourni;
 import org.miage.hadl.m1.PortConfigurationRequis;
 import org.miage.hadl.m1.PortInterneFourni;
 import org.miage.hadl.m1.PortInterneRequis;
-import org.miage.hadl.m1.RPCConnector;
 import org.miage.hadl.m1.Serveur;
 import org.miage.hadl.m1.enums.MODE_FONCTIONNEMENT_SERVEUR;
 import org.miage.hadl.m2.Attachement;
@@ -51,22 +51,22 @@ public class LauncherServeurConfiguration {
         client.addPort(portRequisClient);
 
         // ================================================================================== Création du connecteur RPC
-        Connector connecteur = new RPCConnector(BigCS);
+        Connector connecteurRPC = new ConnectorImpl(BigCS);
 
-        Glue RPCGlueIn = new GlueImpl(connecteur);
+        Glue RPCGlueIn = new GlueImpl(connecteurRPC);
         CalledRole RPCINroleEntree = new CalledRole(RPCGlueIn);
         CallerRole RPCINroleSortie = new CallerRole(RPCGlueIn);
         RPCGlueIn.setRoleEntree(RPCINroleEntree);
         RPCGlueIn.setRoleSortie(RPCINroleSortie);
 
-        Glue RPCGlueOut = new GlueImpl(connecteur);
+        Glue RPCGlueOut = new GlueImpl(connecteurRPC);
         CalledRole RPCOUTRoleEntree = new CalledRole(RPCGlueOut);
         CallerRole RPCOUTRoleSortie = new CallerRole(RPCGlueOut);
         RPCGlueOut.setRoleEntree(RPCOUTRoleEntree);
         RPCGlueOut.setRoleSortie(RPCOUTRoleSortie);
 
-        connecteur.ajouterGlue(RPCGlueIn);
-        connecteur.ajouterGlue(RPCGlueOut);
+        connecteurRPC.ajouterGlue(RPCGlueIn);
+        connecteurRPC.ajouterGlue(RPCGlueOut);
 
         // ========================================================================================= Création du serveur
         Composant serveur = new Serveur(BigCS, MODE_FONCTIONNEMENT_SERVEUR.CONFIGURATION);
@@ -83,16 +83,31 @@ public class LauncherServeurConfiguration {
 
         // ============================================================================== Création du Connection Manager
         Composant connectionManager = new ConnectionManager(ServeurConfig);
-        PortInterneFourni portFourniCM = new PortInterneFourni(connectionManager);
-        PortInterneRequis portRequisCM = new PortInterneRequis(connectionManager);
-        connectionManager.addPort(portFourniCM);
-        connectionManager.addPort(portRequisCM);
+        PortInterneFourni externalSocketCaller = new PortInterneFourni(connectionManager);
+        PortInterneRequis externalSocketCalled = new PortInterneRequis(connectionManager);
+        PortInterneFourni DBQuery = new PortInterneFourni(connectionManager);
+        PortInterneRequis SecurityCheck = new PortInterneRequis(connectionManager);
+        connectionManager.addPort(externalSocketCaller);
+        connectionManager.addPort(externalSocketCalled);
+        connectionManager.addPort(DBQuery);
+        connectionManager.addPort(SecurityCheck);
+
+        // ============================================================================ Création du connecteur SQL Query
+        Connector SQLQuery = new ConnectorImpl(ServeurConfig);
+        Glue SQLQueryGlue = new GlueImpl(SQLQuery);
+        CalledRole SQLQueryRoleEntree = new CalledRole(SQLQueryGlue);
+        CallerRole SQLQueryRoleSortie = new CallerRole(SQLQueryGlue);
+        RPCGlueIn.setRoleEntree(SQLQueryRoleEntree);
+        RPCGlueIn.setRoleSortie(SQLQueryRoleSortie);
+        SQLQuery.ajouterGlue(SQLQueryGlue);
 
         // Création des bindings
         BindingImpl portServToPortConfRequis = new BindingImpl(ServeurConfig, portRequisServeurLight, portConfigRequis);
-        BindingImpl portConfRequisToPortCMRequis = new BindingImpl(ServeurConfig, portRequisCM, portConfigRequis);
+        BindingImpl portConfRequisToPortCMRequis = new BindingImpl(ServeurConfig, externalSocketCalled, portConfigRequis);
 
         // Création des attachements ServeurConfig
+        Attachement DBQueryAttachement = new AttachementImpl(ServeurConfig, DBQuery, SQLQueryRoleEntree);
+
         // Ajout des composants de la configuration Serveur
         ServeurConfig.addPortConfiguration(portConfigFourni);
         ServeurConfig.addPortConfiguration(portConfigRequis);

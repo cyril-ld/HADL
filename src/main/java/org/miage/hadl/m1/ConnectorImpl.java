@@ -12,9 +12,9 @@ import org.miage.hadl.m2.Connector;
  *
  * @author Cyril LD
  */
-public class RPCConnector extends Connector {
+public class ConnectorImpl extends Connector {
 
-    public RPCConnector(Configuration p_oPere) {
+    public ConnectorImpl(Configuration p_oPere) {
         super(p_oPere);
     }
 }

@@ -10,10 +10,10 @@ import org.miage.hadl.m1.CalledRole;
 import org.miage.hadl.m1.CallerRole;
 import org.miage.hadl.m1.Client;
 import org.miage.hadl.m1.ConfigurationImpl;
+import org.miage.hadl.m1.ConnectorImpl;
 import org.miage.hadl.m1.GlueImpl;
 import org.miage.hadl.m1.PortInterneFourni;
 import org.miage.hadl.m1.PortInterneRequis;
-import org.miage.hadl.m1.RPCConnector;
 import org.miage.hadl.m1.Serveur;
 import org.miage.hadl.m1.enums.MODE_FONCTIONNEMENT_SERVEUR;
 import org.miage.hadl.m2.Attachement;
@@ -49,7 +49,7 @@ public class LauncherServeurComposant {
         serveur.addPort(portRequisServeurLight);
 
         // ================================================================================== Création du connecteur RPC
-        Connector connecteur = new RPCConnector(BigCS);
+        Connector connecteur = new ConnectorImpl(BigCS);
 
         Glue RPCGlueIn = new GlueImpl(connecteur);
         CalledRole RPCINroleEntree = new CalledRole(RPCGlueIn);
