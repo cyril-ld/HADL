@@ -5,8 +5,6 @@
  */
 package org.miage.hadl.m2;
 
-import org.miage.hadl.transverse.Message;
-
 /**
  * Le binding permet de faire le lien entre un port interne et un port de configuration. Permettant ainsi de faire
  * dialoguer un composant avec une configuration
@@ -37,13 +35,6 @@ public abstract class Binding implements Element {
         this.pere = p_oPere;
     }
 
-    /**
-     * Méthode utilisée lorsqu'un message est reçu par l'élément
-     *
-     * @param message - Le message reçu
-     */
-    public abstract void messageRecu(Message message);
-
     @Override
     public Element getFather() {
         return this.pere;
@@ -53,9 +44,26 @@ public abstract class Binding implements Element {
     public void setFather(Element p_oPere) {
         if (p_oPere == null) {
             throw new IllegalArgumentException("Le père ne peut pas être nul pour le binding !");
-        } else if (p_oPere.getClass() != Configuration.class) {
+        } else if (p_oPere.getClass().getSuperclass() != Configuration.class) {
             throw new IllegalArgumentException("Le père du binding est une configuration !");
         }
         this.pere = (Configuration) p_oPere;
     }
+
+    public PortInterne getPortInterne() {
+        return portInterne;
+    }
+
+    public void setPortInterne(PortInterne portInterne) {
+        this.portInterne = portInterne;
+    }
+
+    public PortConfiguration getPortExterne() {
+        return portExterne;
+    }
+
+    public void setPortExterne(PortConfiguration portExterne) {
+        this.portExterne = portExterne;
+    }
+
 }

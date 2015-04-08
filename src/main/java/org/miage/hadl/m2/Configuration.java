@@ -81,7 +81,7 @@ public abstract class Configuration implements Element {
      *
      * @param p_oSource - L'objet source ayant reçu un message
      */
-    public void faireSuivreMessage(InterfaceCommunication p_oSource) {
+    public void faireSuivreMessageEnInterne(InterfaceCommunication p_oSource) {
 
         Attachement attachement;
 
@@ -104,6 +104,37 @@ public abstract class Configuration implements Element {
         }
     }
 
+    /**
+     * Fait suivre le message vers une autre configuration via les Bindings stockés dans les éléments de la
+     * configuration.
+     *
+     * @param p_oSource - La source du message
+     */
+    public void faireSuivreMessageEnExterne(InterfaceCommunication p_oSource) {
+
+        Binding binding;
+
+        // Parcours des attachement
+        for (Element item : this.elements) {
+            if (item.getClass().getSuperclass() == Binding.class) {
+
+                binding = (Binding) item;
+
+                // On cherche si la source est bindée par l'attachement d'un côté ou de l'autre et on lui forward le message
+                if (binding.getPortExterne() == p_oSource) {
+                    System.out.println("Je suis la Configuration " + this.nom + ", je fais suivre un message sur un port de configuration déterminé via le binding !");
+                    binding.getPortInterne().transmettreMessage(p_oSource.getMessage());
+                    break;
+                } else if (binding.getPortInterne() == p_oSource) {
+                    System.out.println("Je suis la Configuration " + this.nom + ", je fais suivre un message sur un socket déterminé via le binding !");
+                    binding.getPortExterne().transmettreMessage(p_oSource.getMessage());
+                    break;
+                }
+            }
+        }
+    }
+
+//    public void getHandlingConfiguration()
     /**
      * Construit une nouvelle configuration
      *
@@ -212,9 +243,22 @@ public abstract class Configuration implements Element {
 
     @Override
     public void setFather(Element p_oPere) {
-        if (p_oPere != null && p_oPere.getClass() != Configuration.class) {
+        if (p_oPere != null && p_oPere.getClass().getSuperclass() != Configuration.class) {
             throw new IllegalArgumentException("Le père d'une configuration doit être une configuration !");
         }
         this.pere = (Configuration) p_oPere;
+    }
+
+    /**
+     * Ajoute un port dans la configuration
+     *
+     * @param p_oPortConfig - Le port à ajouter
+     */
+    public void addPortConfiguration(PortConfiguration p_oPortConfig) {
+        if (this.portsConfiguration == null) {
+            this.portsConfiguration = new ArrayList<>();
+        }
+        p_oPortConfig.setPere(this);
+        this.portsConfiguration.add(p_oPortConfig);
     }
 }

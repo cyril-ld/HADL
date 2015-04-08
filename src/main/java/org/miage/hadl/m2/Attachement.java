@@ -55,11 +55,39 @@ public abstract class Attachement implements Element {
         this.pere = (Configuration) p_oPere;
     }
 
+    /**
+     * Retourne le port
+     *
+     * @return the port
+     */
     public PortInterne getPort() {
         return port;
     }
 
+    /**
+     * Affecte un port
+     *
+     * @param p_oPort - La nouvelle valeur du port
+     */
+    public void setPort(PortInterne p_oPort) {
+        this.port = p_oPort;
+    }
+
+    /**
+     * Retourne le rôle
+     *
+     * @return le rôle
+     */
     public Role getRole() {
         return role;
+    }
+
+    /**
+     * Affecte le rôle
+     *
+     * @param p_oRole - La nouvelle valeur du rôle
+     */
+    public void setRole(Role p_oRole) {
+        this.role = p_oRole;
     }
 }

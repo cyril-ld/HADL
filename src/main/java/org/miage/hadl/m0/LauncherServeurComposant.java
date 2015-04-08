@@ -11,10 +11,11 @@ import org.miage.hadl.m1.CallerRole;
 import org.miage.hadl.m1.Client;
 import org.miage.hadl.m1.ConfigurationImpl;
 import org.miage.hadl.m1.GlueImpl;
-import org.miage.hadl.m1.PortFourni;
-import org.miage.hadl.m1.PortRequis;
+import org.miage.hadl.m1.PortInterneFourni;
+import org.miage.hadl.m1.PortInterneRequis;
 import org.miage.hadl.m1.RPCConnector;
 import org.miage.hadl.m1.Serveur;
+import org.miage.hadl.m1.enums.MODE_FONCTIONNEMENT_SERVEUR;
 import org.miage.hadl.m2.Attachement;
 import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.Configuration;
@@ -30,24 +31,24 @@ public class LauncherServeurComposant {
 
     public static void main(String... params) {
 
-        // Création de la configuration globale
+        // ======================================================================== Création de la configuration globale
         Configuration BigCS = new ConfigurationImpl("BigCS");
 
-        // Création du client
+        // ========================================================================================== Création du client
         Composant client = new Client(BigCS);
-        PortFourni portFourniClient = new PortFourni(client);
-        PortRequis portRequisClient = new PortRequis(client);
+        PortInterneFourni portFourniClient = new PortInterneFourni(client);
+        PortInterneRequis portRequisClient = new PortInterneRequis(client);
         client.addPort(portFourniClient);
         client.addPort(portRequisClient);
 
-        // Création du serveur light
-        Composant serveur = new Serveur(BigCS);
-        PortFourni portFourniServeurLight = new PortFourni(serveur);
-        PortRequis portRequisServeurLight = new PortRequis(serveur);
+        // ================================================================== Création du serveur light (mode composant)
+        Composant serveur = new Serveur(BigCS, MODE_FONCTIONNEMENT_SERVEUR.COMPOSANT);
+        PortInterneFourni portFourniServeurLight = new PortInterneFourni(serveur);
+        PortInterneRequis portRequisServeurLight = new PortInterneRequis(serveur);
         serveur.addPort(portFourniServeurLight);
         serveur.addPort(portRequisServeurLight);
 
-        // Création du connecteur RPC
+        // ================================================================================== Création du connecteur RPC
         Connector connecteur = new RPCConnector(BigCS);
 
         Glue RPCGlueIn = new GlueImpl(connecteur);
@@ -65,13 +66,13 @@ public class LauncherServeurComposant {
         connecteur.ajouterGlue(RPCGlueIn);
         connecteur.ajouterGlue(RPCGlueOut);
 
-        // Création des attachements
+        // =================================================================================== Création des attachements
         Attachement clientToRPC = new AttachementImpl(BigCS, portFourniClient, RPCINroleEntree);
         Attachement RPCToClient = new AttachementImpl(BigCS, portRequisClient, RPCOUTRoleSortie);
         Attachement RPCToServeur = new AttachementImpl(BigCS, portRequisServeurLight, RPCINroleSortie);
         Attachement ServeurToRPC = new AttachementImpl(BigCS, portFourniServeurLight, RPCOUTRoleEntree);
 
-        // Ajout des elements dans la configuration BigCS
+        // ============================================================== Ajout des elements dans la configuration BigCS
         BigCS.addElement(client);
         BigCS.addElement(serveur);
         BigCS.addElement(clientToRPC);
@@ -79,7 +80,7 @@ public class LauncherServeurComposant {
         BigCS.addElement(RPCToServeur);
         BigCS.addElement(ServeurToRPC);
 
-        // Et maintenant on demande au client d'envoyer son message !
+        // Et maintenant on demande au client d'envoyer son message afin que le serveur lui réponde, la suite dans les traces !
         ((Client) client).sendMessage("Fera-t-il beau demain ?");
     }
 }

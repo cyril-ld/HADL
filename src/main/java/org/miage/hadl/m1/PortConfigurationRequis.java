@@ -5,27 +5,29 @@
  */
 package org.miage.hadl.m1;
 
-import org.miage.hadl.m2.Glue;
-import org.miage.hadl.m2.Role;
+import org.miage.hadl.m2.Configuration;
+import org.miage.hadl.m2.PortConfiguration;
+import org.miage.hadl.m2.enums.PORT_TYPE;
 import org.miage.hadl.transverse.Message;
 
 /**
  *
  * @author Cyril LD
  */
-public class CallerRole extends Role {
+public class PortConfigurationRequis extends PortConfiguration {
 
     private Message message;
 
-    public CallerRole(Glue p_oPere) {
+    public PortConfigurationRequis(Configuration p_oPere) {
         super(p_oPere);
+        this.typePort = PORT_TYPE.PORT_REQUIS;
     }
 
     @Override
     public void transmettreMessage(Message message) {
-        System.out.println("Je suis un role appelant, je demande à la config un attachement !");
+        System.out.println("Je suis un port requis de configuration, je viens de récupérer le message !");
         this.message = message;
-        this.pere.getPere().getFather().faireSuivreMessageEnInterne(this);
+        this.getPere().faireSuivreMessageEnExterne(this);
     }
 
     @Override

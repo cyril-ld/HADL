@@ -14,11 +14,11 @@ import org.miage.hadl.transverse.Message;
  *
  * @author Cyril LD
  */
-public class PortRequis extends PortInterne {
+public class PortInterneRequis extends PortInterne {
 
     private Message message;
 
-    public PortRequis(Composant p_oPere) {
+    public PortInterneRequis(Composant p_oPere) {
         super(p_oPere);
         this.typePort = PORT_TYPE.PORT_REQUIS;
     }

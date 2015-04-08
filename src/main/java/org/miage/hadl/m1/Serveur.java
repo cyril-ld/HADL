@@ -5,6 +5,7 @@
  */
 package org.miage.hadl.m1;
 
+import org.miage.hadl.m1.enums.MODE_FONCTIONNEMENT_SERVEUR;
 import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.Configuration;
 import org.miage.hadl.m2.PortInterne;
@@ -16,22 +17,34 @@ import org.miage.hadl.transverse.Message;
  */
 public class Serveur extends Composant {
 
-    public Serveur(Configuration p_oPere) {
+    private MODE_FONCTIONNEMENT_SERVEUR modeFonctionnement;
+
+    public Serveur(Configuration p_oPere, MODE_FONCTIONNEMENT_SERVEUR p_eModeFonctionnement) {
         super(p_oPere);
+        this.modeFonctionnement = p_eModeFonctionnement;
     }
 
     @Override
     public void messageReçu(Message message) {
         System.out.println("Je suis le serveur light, je viens de recevoir le message : " + message.getContent());
-        this.sendMessage("Il fera beau demain !");
+        switch (this.modeFonctionnement) {
+            case COMPOSANT:
+                System.out.println("Serveur configuré en mode composant, je réponds tout seul.");
+                this.sendMessage("Il fera beau demain !");
+                break;
+            case CONFIGURATION:
+                System.out.println("Serveur configuré en mode configuration, je passe par la configuration pour savoir où transmettre le message.");
+                this.getFather().faireSuivreMessageEnExterne(this.getPortRequis());
+                break;
+        }
     }
 
     public void sendMessage(String p_sMessage) {
-        PortFourni portEnvoi;
+        PortInterneFourni portEnvoi;
 
         for (PortInterne item : this.ports) {
-            if (item.getClass() == PortFourni.class) {
-                portEnvoi = (PortFourni) item;
+            if (item.getClass() == PortInterneFourni.class) {
+                portEnvoi = (PortInterneFourni) item;
                 System.out.println("Je suis le serveur light, je réponds au message !");
                 portEnvoi.transmettreMessage(new Message(p_sMessage));
                 break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
@@ -39,4 +52,17 @@ public class Serveur extends Composant {
         }
     }
 
+    private PortInterneRequis getPortRequis() {
+        PortInterneRequis portReception;
+
+        portReception = null;
+
+        for (PortInterne item : this.ports) {
+            if (item.getClass() == PortInterneRequis.class) {
+                portReception = (PortInterneRequis) item;
+                break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
+            }
+        }
+        return portReception;
+    }
 }
