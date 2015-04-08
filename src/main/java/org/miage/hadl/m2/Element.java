@@ -13,4 +13,17 @@ package org.miage.hadl.m2;
  */
 public interface Element {
 
+    /**
+     * Récupère une référence sur le père de l'élément
+     *
+     * @return l'élément père
+     */
+    public Element getFather();
+
+    /**
+     * Modifie l'élément père de l'élément
+     *
+     * @param p_oPere - Le père de l'élément courant
+     */
+    public void setFather(Element p_oPere);
 }

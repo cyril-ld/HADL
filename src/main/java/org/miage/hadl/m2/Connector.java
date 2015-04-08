@@ -6,6 +6,7 @@
 package org.miage.hadl.m2;
 
 import java.util.List;
+import org.miage.hadl.transverse.Message;
 
 /**
  * Un connecteur permet de faire dialoguer des composants entre eux. Il se compose principalement de glue et
@@ -23,5 +24,38 @@ public abstract class Connector implements Element {
     /**
      * Référence sur l'élément père
      */
-    protected Element pere;
+    private Configuration pere;
+
+    /**
+     *
+     * @param p_oPere
+     */
+    public Connector(Configuration p_oPere) {
+        if (p_oPere == null) {
+            throw new IllegalArgumentException("Le père ne peut pas être nul pour le connecteur !");
+        }
+        this.pere = p_oPere;
+    }
+
+    /**
+     * Méthode appelée lorsqu'un message est reçu
+     *
+     * @param message - Le message reçu
+     */
+    public abstract void messageRecu(Message message);
+
+    @Override
+    public Element getFather() {
+        return this.pere;
+    }
+
+    @Override
+    public void setFather(Element p_oPere) {
+        if (p_oPere == null) {
+            throw new IllegalArgumentException("Le père ne peut pas être nul pour le connecteur !");
+        } else if (p_oPere.getClass() != Configuration.class) {
+            throw new IllegalArgumentException("Le père du connecteur doit être une configuration !");
+        }
+        this.pere = (Configuration) p_oPere;
+    }
 }

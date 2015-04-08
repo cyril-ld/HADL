@@ -5,6 +5,8 @@
  */
 package org.miage.hadl.m2;
 
+import org.miage.hadl.transverse.Message;
+
 /**
  *
  * @author Cyril LD
@@ -14,7 +16,7 @@ public abstract class Glue {
     /**
      * Référence sur le père
      */
-    protected Element pere;
+    private Connector pere;
 
     /**
      * Rôle en entrée de la glue
@@ -25,4 +27,32 @@ public abstract class Glue {
      * Rôle en sortie de la glue
      */
     protected Role roleSortie;
+
+    public Glue(Connector p_oPere) {
+        if (p_oPere == null) {
+            throw new IllegalArgumentException("Le père ne peut pas être nul pour la Glue !");
+        }
+        this.pere = p_oPere;
+    }
+
+    /**
+     * @return the pere
+     */
+    public Connector getPere() {
+        return pere;
+    }
+
+    /**
+     * @param pere the pere to set
+     */
+    public void setPere(Connector pere) {
+        this.pere = pere;
+    }
+
+    /**
+     * Méthode appelée lorsqu'un message est reçu
+     *
+     * @param message - Le message reçu
+     */
+    public abstract void messageRecu(Message message);
 }
