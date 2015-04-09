@@ -14,6 +14,8 @@ import org.miage.hadl.m1.ConfigurationImpl;
 import org.miage.hadl.m1.ConnectionManager;
 import org.miage.hadl.m1.ConnectorImpl;
 import org.miage.hadl.m1.Database;
+import org.miage.hadl.m1.ExternalSocketFourni;
+import org.miage.hadl.m1.ExternalSocketRequis;
 import org.miage.hadl.m1.GlueImpl;
 import org.miage.hadl.m1.PortConfigurationFourni;
 import org.miage.hadl.m1.PortConfigurationRequis;
@@ -26,6 +28,7 @@ import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.Configuration;
 import org.miage.hadl.m2.Connector;
 import org.miage.hadl.m2.Glue;
+import org.miage.hadl.m2.PortInterne;
 
 /**
  * Permet de lancer la configuration BigCS avec le serveur en tant que configuration.
@@ -84,17 +87,14 @@ public class LauncherServeurConfiguration {
 
         // ============================================================================== Création du Connection Manager
         Composant connectionManager = new ConnectionManager(serveurConfig);
-        PortInterneFourni externalSocketCaller = new PortInterneFourni(connectionManager);
-        PortInterneRequis externalSocketCalled = new PortInterneRequis(connectionManager);
+        PortInterne externalSocketCaller = new ExternalSocketFourni(connectionManager);
+        PortInterne externalSocketCalled = new ExternalSocketRequis(connectionManager);
         PortInterneFourni DBQuery = new PortInterneFourni(connectionManager);
         PortInterneRequis SecurityCheck = new PortInterneRequis(connectionManager);
         connectionManager.addPort(externalSocketCalled);
         connectionManager.addPort(DBQuery);
-        /*
-         * Avant d'ajouter ces deux là, il va falloir trouver comment gérer plusieurs mêmes ports
-         */
-//        connectionManager.addPort(SecurityCheck);
-//        connectionManager.addPort(externalSocketCaller);
+        connectionManager.addPort(SecurityCheck);
+        connectionManager.addPort(externalSocketCaller);
 
         // ============================================================================ Création du connecteur SQL Query
         Connector SQLQueryConnector = new ConnectorImpl(serveurConfig);
@@ -140,6 +140,8 @@ public class LauncherServeurConfiguration {
         // ======================================================================================= Création des bindings
         BindingImpl portServToPortConfRequis = new BindingImpl(serveurConfig, portRequisServeurLight, portConfigRequis);
         BindingImpl portConfRequisToPortCMRequis = new BindingImpl(serveurConfig, externalSocketCalled, portConfigRequis);
+        BindingImpl portCMFourniToPortConfFourni = new BindingImpl(serveurConfig, externalSocketCaller, portConfigFourni);
+        BindingImpl portConfFourniToPortServFourni = new BindingImpl(serveurConfig, portFourniServeurLight, portConfigFourni);
 
         // ===================================================================== Création des attachements ServeurConfig
         Attachement DBQueryAttachement = new AttachementImpl(serveurConfig, DBQuery, SQLQueryRoleEntree);
@@ -162,7 +164,8 @@ public class LauncherServeurConfiguration {
         serveurConfig.addElement(securityManager);
         serveurConfig.addElement(cQueryAttachement);
         serveurConfig.addElement(securityAuthAttachement);
-//        serveurConfig.addElement(securityCheckAttachement);
+        serveurConfig.addElement(securityCheckAttachement);
+        serveurConfig.addElement(portCMFourniToPortConfFourni);
 
         // ============================================================== Ajout des elements dans la configuration BigCS
         BigCS.addElement(client);
@@ -173,6 +176,7 @@ public class LauncherServeurConfiguration {
         BigCS.addElement(ServeurToRPC);
         BigCS.addElement(serveurConfig);
         BigCS.addElement(portServToPortConfRequis);
+        BigCS.addElement(portConfFourniToPortServFourni);
 
         // Et maintenant on demande au client d'envoyer son message afin que le serveur lui réponde, la suite dans les traces !
         ((Client) client).sendMessage("Fera-t-il beau demain ?");

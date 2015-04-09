@@ -7,6 +7,7 @@ package org.miage.hadl.m1;
 
 import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.Configuration;
+import org.miage.hadl.m2.InterfaceCommunication;
 import org.miage.hadl.m2.PortInterne;
 import org.miage.hadl.transverse.Message;
 
@@ -21,15 +22,25 @@ public class ConnectionManager extends Composant {
     }
 
     @Override
-    public void messageReçu(Message p_sMessage) {
-        PortInterneFourni portEnvoi;
+    public void messageReçu(Message p_sMessage, InterfaceCommunication sender) {
+        PortInterne portEnvoi;
 
         for (PortInterne item : this.ports) {
-            if (item.getClass() == PortInterneFourni.class) {
-                portEnvoi = (PortInterneFourni) item;
-                System.out.println("Je suis un ConnectionManager, je transfère à mon port fourni !");
-                portEnvoi.transmettreMessage(p_sMessage);
-                break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
+            if (sender.getClass() == ExternalSocketRequis.class) {
+                if (item.getClass() == PortInterneFourni.class) {
+                    portEnvoi = (PortInterneFourni) item;
+                    System.out.println("Je suis un ConnectionManager, je transfère à mon port fourni !");
+                    portEnvoi.transmettreMessage(p_sMessage);
+                    break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
+                }
+            } else if (sender.getClass() == PortInterneRequis.class) {
+                if (item.getClass() == ExternalSocketFourni.class) {
+                    this.getFather().faireSuivreMessageEnExterne(item);
+//                    portEnvoi = (ExternalSocketFourni) item;
+//                    System.out.println("Je suis un ConnectionManager, je transfère à mon port fourni !");
+//                    portEnvoi.transmettreMessage(p_sMessage);
+                    break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
+                }
             }
         }
     }

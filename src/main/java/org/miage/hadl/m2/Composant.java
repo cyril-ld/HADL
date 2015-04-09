@@ -37,8 +37,9 @@ public abstract class Composant implements Element {
      * Méthode appelée lorsqu'un message est reçu.
      *
      * @param message - Le message reçu
+     * @param sender  - L'interface de communication envoyant le message
      */
-    public abstract void messageReçu(Message message);
+    public abstract void messageReçu(Message message, InterfaceCommunication sender);
 
     @Override
     public Configuration getFather() {

@@ -7,25 +7,23 @@ package org.miage.hadl.m1;
 
 import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.PortInterne;
-import org.miage.hadl.m2.enums.PORT_TYPE;
 import org.miage.hadl.transverse.Message;
 
 /**
  *
  * @author Cyril LD
  */
-public class PortInterneRequis extends PortInterne {
+public class ExternalSocketFourni extends PortInterne {
 
     private Message message;
 
-    public PortInterneRequis(Composant p_oPere) {
+    public ExternalSocketFourni(Composant p_oPere) {
         super(p_oPere);
-        this.typePort = PORT_TYPE.PORT_REQUIS;
     }
 
     @Override
     public void transmettreMessage(Message message) {
-        System.out.println("Je suis un port requis, je viens de récupérer le message !");
+        System.out.println("Je suis un socket fourni, je viens de récupérer le message !");
         this.message = message;
         this.getPere().messageReçu(message, this);
     }
@@ -34,4 +32,5 @@ public class PortInterneRequis extends PortInterne {
     public Message getMessage() {
         return this.message;
     }
+
 }

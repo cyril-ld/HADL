@@ -7,6 +7,7 @@ package org.miage.hadl.m1;
 
 import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.Configuration;
+import org.miage.hadl.m2.InterfaceCommunication;
 import org.miage.hadl.m2.PortInterne;
 import org.miage.hadl.transverse.Message;
 
@@ -21,7 +22,7 @@ public class SecurityManager extends Composant {
     }
 
     @Override
-    public void messageReçu(Message p_sMessage) {
+    public void messageReçu(Message p_sMessage, InterfaceCommunication sender) {
         PortInterneFourni portEnvoi;
 
         for (PortInterne item : this.ports) {

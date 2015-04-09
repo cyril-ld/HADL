@@ -7,6 +7,7 @@ package org.miage.hadl.m1;
 
 import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.Configuration;
+import org.miage.hadl.m2.InterfaceCommunication;
 import org.miage.hadl.m2.PortInterne;
 import org.miage.hadl.transverse.Message;
 
@@ -26,7 +27,7 @@ public class Client extends Composant {
     }
 
     @Override
-    public void messageReçu(Message message) {
+    public void messageReçu(Message message, InterfaceCommunication sender) {
         System.out.println("Youpi j'ai bien reçu la réponse à ma demande, elle est : " + message.getContent());
     }
 

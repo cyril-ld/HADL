@@ -8,6 +8,7 @@ package org.miage.hadl.m1;
 import org.miage.hadl.m1.enums.MODE_FONCTIONNEMENT_SERVEUR;
 import org.miage.hadl.m2.Composant;
 import org.miage.hadl.m2.Configuration;
+import org.miage.hadl.m2.InterfaceCommunication;
 import org.miage.hadl.m2.PortInterne;
 import org.miage.hadl.transverse.Message;
 
@@ -25,7 +26,7 @@ public class Serveur extends Composant {
     }
 
     @Override
-    public void messageReçu(Message message) {
+    public void messageReçu(Message message, InterfaceCommunication sender) {
         System.out.println("Je suis le serveur light, je viens de recevoir le message : " + message.getContent());
         switch (this.modeFonctionnement) {
             case COMPOSANT:
