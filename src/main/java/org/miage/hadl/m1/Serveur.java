@@ -27,14 +27,14 @@ public class Serveur extends Composant {
 
     @Override
     public void messageReçu(Message message, InterfaceCommunication sender) {
-        System.out.println("Je suis le serveur light, je viens de recevoir le message : " + message.getContent());
+        System.out.println("[SERVEUR] Je suis le serveur light, je viens de recevoir le message : " + message.getContent());
         switch (this.modeFonctionnement) {
             case COMPOSANT:
-                System.out.println("Serveur configuré en mode composant, je réponds tout seul.");
+                System.out.println("[SERVEUR] Serveur configuré en mode composant, je réponds tout seul.");
                 this.sendMessage("Il fera beau demain !");
                 break;
             case CONFIGURATION:
-                System.out.println("Serveur configuré en mode configuration, je passe par la configuration pour savoir où transmettre le message.");
+                System.out.println("[SERVEUR] Serveur configuré en mode configuration, je passe par la configuration pour savoir où transmettre le message.");
                 this.getFather().faireSuivreMessageEnExterne(this.getPortRequis());
                 break;
         }
@@ -46,7 +46,7 @@ public class Serveur extends Composant {
         for (PortInterne item : this.ports) {
             if (item.getClass() == PortInterneFourni.class) {
                 portEnvoi = (PortInterneFourni) item;
-                System.out.println("Je suis le serveur light, je réponds au message !");
+                System.out.println("[SERVEUR] Je suis le serveur light, je réponds au message !");
                 portEnvoi.transmettreMessage(new Message(p_sMessage));
                 break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
             }

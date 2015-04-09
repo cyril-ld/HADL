@@ -28,7 +28,7 @@ public class Database extends Composant {
         for (PortInterne item : this.ports) {
             if (item.getClass() == PortInterneFourni.class) {
                 portEnvoi = (PortInterneFourni) item;
-                System.out.println("Je suis une Database, on me demande : " + p_sMessage.getContent());
+                System.out.println("[DATABASE] Je suis une Database, on me demande : " + p_sMessage.getContent());
                 portEnvoi.transmettreMessage(new Message("Oui il fera un temps merveilleux !"));
                 break;
             }

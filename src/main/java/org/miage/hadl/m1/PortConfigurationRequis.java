@@ -25,7 +25,7 @@ public class PortConfigurationRequis extends PortConfiguration {
 
     @Override
     public void transmettreMessage(Message message) {
-        System.out.println("Je suis un port requis de la configuration " + this.getPere().getNom() + ", je viens de récupérer le message !");
+        System.out.println("[PORT CONFIGURATION] Je suis un port requis de la configuration " + this.getPere().getNom() + ", je viens de récupérer le message !");
         this.message = message;
         this.getPere().faireSuivreMessageEnExterne(this);
     }

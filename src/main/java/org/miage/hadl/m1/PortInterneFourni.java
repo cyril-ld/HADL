@@ -25,7 +25,7 @@ public class PortInterneFourni extends PortInterne {
 
     @Override
     public void transmettreMessage(Message p_oMessage) {
-        System.out.println("Je suis un port fourni, je demande à la configuration un attachement !");
+        System.out.println("[PORT INTERNE] Je suis un port fourni de " + this.getPere().getClass() + ", je demande à la configuration un attachement !");
         this.message = p_oMessage;
         this.getPere().getFather().faireSuivreMessageEnInterne(this);
     }

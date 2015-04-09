@@ -23,7 +23,7 @@ public class ExternalSocketRequis extends PortInterne {
 
     @Override
     public void transmettreMessage(Message message) {
-        System.out.println("Je suis un external socket requis, je viens de récupérer le message !");
+        System.out.println("[EXTERNAL SOCKET] Je suis un external socket requis de " + this.getPere().getClass() + ", je viens de récupérer le message !");
         this.message = message;
         this.getPere().messageReçu(message, this);
     }

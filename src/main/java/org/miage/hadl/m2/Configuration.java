@@ -92,11 +92,11 @@ public abstract class Configuration implements Element {
 
                 // On cherche si la source est bindée par l'attachement d'un côté ou de l'autre et on lui forward le message
                 if (attachement.getRole() == p_oSource) {
-                    System.out.println("Je suis la Configuration " + this.nom + ", je fais suivre un message sur un composant déterminé via l'attachement !");
+                    System.out.println("[CONFIGURATION] Je suis la Configuration " + this.nom + ", je fais suivre un message sur un composant déterminé via l'attachement !");
                     attachement.getPort().transmettreMessage(p_oSource.getMessage());
                     break;
                 } else if (attachement.getPort() == p_oSource) {
-                    System.out.println("Je suis la Configuration " + this.nom + ", je fais suivre un message sur un connecteur déterminé via l'attachement !");
+                    System.out.println("[CONFIGURATION] Je suis la Configuration " + this.nom + ", je fais suivre un message sur un connecteur déterminé via l'attachement !");
                     attachement.getRole().transmettreMessage(p_oSource.getMessage());
                     break;
                 }
@@ -122,11 +122,11 @@ public abstract class Configuration implements Element {
 
                 // On cherche si la source est bindée par l'attachement d'un côté ou de l'autre et on lui forward le message
                 if (binding.getPortExterne() == p_oSource) {
-                    System.out.println("Je suis la Configuration " + this.nom + ", je fais suivre un message sur un port de configuration déterminé via le binding !");
+                    System.out.println("[CONFIGURATION] Je suis la Configuration " + this.nom + ", je fais suivre un message sur un port de configuration déterminé via le binding !");
                     binding.getPortInterne().transmettreMessage(p_oSource.getMessage());
                     break;
                 } else if (binding.getPortInterne() == p_oSource) {
-                    System.out.println("Je suis la Configuration " + this.nom + ", je fais suivre un message sur un socket déterminé via le binding !");
+                    System.out.println("[CONFIGURATION] Je suis la Configuration " + this.nom + ", je fais suivre un message sur un socket déterminé via le binding !");
                     binding.getPortExterne().transmettreMessage(p_oSource.getMessage());
                     break;
                 }

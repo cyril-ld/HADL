@@ -23,7 +23,7 @@ public class ExternalSocketFourni extends PortInterne {
 
     @Override
     public void transmettreMessage(Message message) {
-        System.out.println("Je suis un socket fourni, je viens de récupérer le message !");
+        System.out.println("[EXTERNAL SOCKET] Je suis un socket fourni de " + this.getPere().getClass() + ", je viens de récupérer le message !");
         this.message = message;
         this.getPere().getFather().faireSuivreMessageEnExterne(this);
     }

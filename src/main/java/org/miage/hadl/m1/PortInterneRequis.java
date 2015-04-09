@@ -25,7 +25,7 @@ public class PortInterneRequis extends PortInterne {
 
     @Override
     public void transmettreMessage(Message message) {
-        System.out.println("Je suis un port requis, je viens de récupérer le message !");
+        System.out.println("[PORT INTERNE] Je suis un port requis de " + this.getPere().getClass() + ", je viens de récupérer le message !");
         this.message = message;
         this.getPere().messageReçu(message, this);
     }

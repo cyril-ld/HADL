@@ -28,7 +28,7 @@ public class SecurityManager extends Composant {
         for (PortInterne item : this.ports) {
             if (item.getClass() == PortInterneFourni.class) {
                 portEnvoi = (PortInterneFourni) item;
-                System.out.println("Je suis un SecurityManager, je transfère à mon port fourni !");
+                System.out.println("[SECURITY MANAGER] Je suis un SecurityManager, je transfère à mon port fourni !");
                 portEnvoi.transmettreMessage(p_sMessage);
                 break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
             }

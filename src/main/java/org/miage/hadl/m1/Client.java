@@ -28,7 +28,7 @@ public class Client extends Composant {
 
     @Override
     public void messageReçu(Message message, InterfaceCommunication sender) {
-        System.out.println("Youpi j'ai bien reçu la réponse à ma demande, elle est : " + message.getContent());
+        System.out.println("[CLIENT] Youpi j'ai bien reçu la réponse à ma demande, elle est : " + message.getContent());
     }
 
     /**
@@ -44,7 +44,7 @@ public class Client extends Composant {
         for (PortInterne item : this.ports) {
             if (item.getClass() == PortInterneFourni.class) {
                 portEnvoi = (PortInterneFourni) item;
-                System.out.println("Je suis un client, je veux savoir le temps qu'il fera demain !");
+                System.out.println("[CLIENT] Je suis un client, je veux savoir le temps qu'il fera demain !");
                 portEnvoi.transmettreMessage(new Message(p_sMessage));
                 break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
             }
