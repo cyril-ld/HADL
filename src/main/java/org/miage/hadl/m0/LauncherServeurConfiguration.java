@@ -121,6 +121,22 @@ public class LauncherServeurConfiguration {
         securityQueryGlue.setRoleSortie(securityQueryRoleSortie);
         securityQuery.ajouterGlue(securityQueryGlue);
 
+        // ====================================================================== Création du composant Security Manager
+        Composant securityManager = new org.miage.hadl.m1.SecurityManager(serveurConfig);
+        PortInterneFourni securityAuth = new PortInterneFourni(securityManager);
+        PortInterneRequis CQuery = new PortInterneRequis(securityManager);
+        securityManager.addPort(CQuery);
+        securityManager.addPort(securityAuth);
+
+        // ===================================================================== Création du connecteur ClearanceRequest
+        Connector clearanceRequest = new ConnectorImpl(serveurConfig);
+        Glue clearanceRequestGlue = new GlueImpl(clearanceRequest);
+        CalledRole clearanceRequestRoleEntree = new CalledRole(clearanceRequestGlue);
+        CallerRole clearanceRequestRoleSortie = new CallerRole(clearanceRequestGlue);
+        clearanceRequestGlue.setRoleEntree(clearanceRequestRoleEntree);
+        clearanceRequestGlue.setRoleSortie(clearanceRequestRoleSortie);
+        clearanceRequest.ajouterGlue(clearanceRequestGlue);
+
         // ======================================================================================= Création des bindings
         BindingImpl portServToPortConfRequis = new BindingImpl(serveurConfig, portRequisServeurLight, portConfigRequis);
         BindingImpl portConfRequisToPortCMRequis = new BindingImpl(serveurConfig, externalSocketCalled, portConfigRequis);
@@ -129,6 +145,9 @@ public class LauncherServeurConfiguration {
         Attachement DBQueryAttachement = new AttachementImpl(serveurConfig, DBQuery, SQLQueryRoleEntree);
         Attachement queryingAttachement = new AttachementImpl(serveurConfig, querying, SQLQueryRoleSortie);
         Attachement securityManagementAttachement = new AttachementImpl(serveurConfig, securityManagement, securityQueryRoleEntree);
+        Attachement cQueryAttachement = new AttachementImpl(serveurConfig, CQuery, securityQueryRoleSortie);
+        Attachement securityAuthAttachement = new AttachementImpl(serveurConfig, securityAuth, clearanceRequestRoleEntree);
+        Attachement securityCheckAttachement = new AttachementImpl(serveurConfig, SecurityCheck, clearanceRequestRoleSortie);
 
         // ============================================================ Ajout des composants de la configuration Serveur
         serveurConfig.addPortConfiguration(portConfigFourni);
@@ -140,6 +159,10 @@ public class LauncherServeurConfiguration {
         serveurConfig.addElement(database);
         serveurConfig.addElement(queryingAttachement);
         serveurConfig.addElement(securityManagementAttachement);
+        serveurConfig.addElement(securityManager);
+        serveurConfig.addElement(cQueryAttachement);
+        serveurConfig.addElement(securityAuthAttachement);
+//        serveurConfig.addElement(securityCheckAttachement);
 
         // ============================================================== Ajout des elements dans la configuration BigCS
         BigCS.addElement(client);
