@@ -27,12 +27,22 @@ public class PortConfigurationFourni extends PortConfiguration {
     public void transmettreMessage(Message message) {
         System.out.println("Je suis un port fourni de la configuration " + this.getPere().getNom() + ", je viens de récupérer le message !");
         this.message = message;
-        this.getPere().faireSuivreMessageEnExterne(this);
+        if (this.getPere() != null && this.getPere().getFather() != null) {
+            if (this.getPere().getFather().getClass().getSuperclass() == Configuration.class) {
+                ((Configuration) this.getPere().getFather()).faireSuivreMessageEnExterne(this);
+            }
+        }
+        // this.getPere().faireSuivreMessageEnExterne(this);
     }
 
     @Override
     public Message getMessage() {
         return this.message;
+    }
+
+    @Override
+    public void setMessage(Message message) {
+        this.message = message;
     }
 
 }

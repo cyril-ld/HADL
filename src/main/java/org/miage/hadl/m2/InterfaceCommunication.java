@@ -23,4 +23,11 @@ public interface InterfaceCommunication {
      * @return le message reçu
      */
     public Message getMessage();
+
+    /**
+     * Permet de modifier le message contenu
+     *
+     * @param message - Le nouveau message
+     */
+    public void setMessage(Message message);
 }

@@ -33,4 +33,9 @@ public class CalledRole extends Role {
         return this.message;
     }
 
+    @Override
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
 }

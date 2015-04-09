@@ -34,4 +34,9 @@ public class PortInterneRequis extends PortInterne {
     public Message getMessage() {
         return this.message;
     }
+
+    @Override
+    public void setMessage(Message message) {
+        this.message = message;
+    }
 }

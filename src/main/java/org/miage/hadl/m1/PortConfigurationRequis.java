@@ -35,4 +35,9 @@ public class PortConfigurationRequis extends PortConfiguration {
         return this.message;
     }
 
+    @Override
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
 }

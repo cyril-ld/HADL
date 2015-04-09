@@ -29,17 +29,16 @@ public class ConnectionManager extends Composant {
             if (sender.getClass() == ExternalSocketRequis.class) {
                 if (item.getClass() == PortInterneFourni.class) {
                     portEnvoi = (PortInterneFourni) item;
-                    System.out.println("Je suis un ConnectionManager, je transfère à mon port fourni !");
+                    System.out.println("Je suis un ConnectionManager, je transfère le message à mon port fourni !");
                     portEnvoi.transmettreMessage(p_sMessage);
-                    break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
+                    break;
                 }
             } else if (sender.getClass() == PortInterneRequis.class) {
                 if (item.getClass() == ExternalSocketFourni.class) {
-                    this.getFather().faireSuivreMessageEnExterne(item);
-//                    portEnvoi = (ExternalSocketFourni) item;
-//                    System.out.println("Je suis un ConnectionManager, je transfère à mon port fourni !");
-//                    portEnvoi.transmettreMessage(p_sMessage);
-                    break; // Par soucis de simplicité, on n'envoie qu'à un seul port fourni
+                    System.out.println("Je suis un ConnectionManager, je transfère le message à mon socket appelant !");
+                    portEnvoi = item;
+                    portEnvoi.transmettreMessage(p_sMessage);
+                    break;
                 }
             }
         }

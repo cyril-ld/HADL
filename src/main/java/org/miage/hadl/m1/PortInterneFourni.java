@@ -35,4 +35,9 @@ public class PortInterneFourni extends PortInterne {
         return this.message;
     }
 
+    @Override
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
 }

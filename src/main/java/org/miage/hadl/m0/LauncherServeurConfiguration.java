@@ -138,10 +138,10 @@ public class LauncherServeurConfiguration {
         clearanceRequest.ajouterGlue(clearanceRequestGlue);
 
         // ======================================================================================= Création des bindings
-        BindingImpl portServToPortConfRequis = new BindingImpl(serveurConfig, portRequisServeurLight, portConfigRequis);
+        BindingImpl portServToPortConfRequis = new BindingImpl(BigCS, portRequisServeurLight, portConfigRequis);
         BindingImpl portConfRequisToPortCMRequis = new BindingImpl(serveurConfig, externalSocketCalled, portConfigRequis);
         BindingImpl portCMFourniToPortConfFourni = new BindingImpl(serveurConfig, externalSocketCaller, portConfigFourni);
-        BindingImpl portConfFourniToPortServFourni = new BindingImpl(serveurConfig, portFourniServeurLight, portConfigFourni);
+        BindingImpl portConfFourniToPortServFourni = new BindingImpl(BigCS, portFourniServeurLight, portConfigFourni);
 
         // ===================================================================== Création des attachements ServeurConfig
         Attachement DBQueryAttachement = new AttachementImpl(serveurConfig, DBQuery, SQLQueryRoleEntree);
@@ -155,7 +155,6 @@ public class LauncherServeurConfiguration {
         serveurConfig.addPortConfiguration(portConfigFourni);
         serveurConfig.addPortConfiguration(portConfigRequis);
         serveurConfig.addElement(connectionManager);
-        serveurConfig.addElement(portConfRequisToPortCMRequis);
         serveurConfig.addElement(SQLQueryConnector);
         serveurConfig.addElement(DBQueryAttachement);
         serveurConfig.addElement(database);
@@ -165,6 +164,7 @@ public class LauncherServeurConfiguration {
         serveurConfig.addElement(cQueryAttachement);
         serveurConfig.addElement(securityAuthAttachement);
         serveurConfig.addElement(securityCheckAttachement);
+        serveurConfig.addElement(portConfRequisToPortCMRequis);
         serveurConfig.addElement(portCMFourniToPortConfFourni);
 
         // ============================================================== Ajout des elements dans la configuration BigCS
