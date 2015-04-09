@@ -25,7 +25,7 @@ public class PortConfigurationFourni extends PortConfiguration {
 
     @Override
     public void transmettreMessage(Message message) {
-        System.out.println("Je suis un port fourni de configuration, je viens de récupérer le message !");
+        System.out.println("Je suis un port fourni de la configuration " + this.getPere().getNom() + ", je viens de récupérer le message !");
         this.message = message;
         this.getPere().faireSuivreMessageEnExterne(this);
     }

@@ -62,7 +62,7 @@ public abstract class Connector implements Element {
     public void setFather(Element p_oPere) {
         if (p_oPere == null) {
             throw new IllegalArgumentException("Le père ne peut pas être nul pour le connecteur !");
-        } else if (p_oPere.getClass() != Configuration.class) {
+        } else if (p_oPere.getClass().getSuperclass() != Configuration.class) {
             throw new IllegalArgumentException("Le père du connecteur doit être une configuration !");
         }
         this.pere = (Configuration) p_oPere;

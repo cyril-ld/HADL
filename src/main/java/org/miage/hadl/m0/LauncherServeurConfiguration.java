@@ -13,6 +13,7 @@ import org.miage.hadl.m1.Client;
 import org.miage.hadl.m1.ConfigurationImpl;
 import org.miage.hadl.m1.ConnectionManager;
 import org.miage.hadl.m1.ConnectorImpl;
+import org.miage.hadl.m1.Database;
 import org.miage.hadl.m1.GlueImpl;
 import org.miage.hadl.m1.PortConfigurationFourni;
 import org.miage.hadl.m1.PortConfigurationRequis;
@@ -37,11 +38,11 @@ public class LauncherServeurConfiguration {
 
         // ======================================================================== Création de la configuration globale
         Configuration BigCS = new ConfigurationImpl("BigCS");
-        Configuration ServeurConfig = new ConfigurationImpl("Serveur");
+        Configuration serveurConfig = new ConfigurationImpl("Serveur");
 
         // ========================================================================= Création des ports de configuration
-        PortConfigurationRequis portConfigRequis = new PortConfigurationRequis(ServeurConfig);
-        PortConfigurationFourni portConfigFourni = new PortConfigurationFourni(ServeurConfig);
+        PortConfigurationRequis portConfigRequis = new PortConfigurationRequis(serveurConfig);
+        PortConfigurationFourni portConfigFourni = new PortConfigurationFourni(serveurConfig);
 
         // ========================================================================================== Création du client
         Composant client = new Client(BigCS);
@@ -82,37 +83,63 @@ public class LauncherServeurConfiguration {
         Attachement ServeurToRPC = new AttachementImpl(BigCS, portFourniServeurLight, RPCOUTRoleEntree);
 
         // ============================================================================== Création du Connection Manager
-        Composant connectionManager = new ConnectionManager(ServeurConfig);
+        Composant connectionManager = new ConnectionManager(serveurConfig);
         PortInterneFourni externalSocketCaller = new PortInterneFourni(connectionManager);
         PortInterneRequis externalSocketCalled = new PortInterneRequis(connectionManager);
         PortInterneFourni DBQuery = new PortInterneFourni(connectionManager);
         PortInterneRequis SecurityCheck = new PortInterneRequis(connectionManager);
-        connectionManager.addPort(externalSocketCaller);
         connectionManager.addPort(externalSocketCalled);
         connectionManager.addPort(DBQuery);
-        connectionManager.addPort(SecurityCheck);
+        /*
+         * Avant d'ajouter ces deux là, il va falloir trouver comment gérer plusieurs mêmes ports
+         */
+//        connectionManager.addPort(SecurityCheck);
+//        connectionManager.addPort(externalSocketCaller);
 
         // ============================================================================ Création du connecteur SQL Query
-        Connector SQLQuery = new ConnectorImpl(ServeurConfig);
-        Glue SQLQueryGlue = new GlueImpl(SQLQuery);
+        Connector SQLQueryConnector = new ConnectorImpl(serveurConfig);
+        Glue SQLQueryGlue = new GlueImpl(SQLQueryConnector);
         CalledRole SQLQueryRoleEntree = new CalledRole(SQLQueryGlue);
         CallerRole SQLQueryRoleSortie = new CallerRole(SQLQueryGlue);
-        RPCGlueIn.setRoleEntree(SQLQueryRoleEntree);
-        RPCGlueIn.setRoleSortie(SQLQueryRoleSortie);
-        SQLQuery.ajouterGlue(SQLQueryGlue);
+        SQLQueryGlue.setRoleEntree(SQLQueryRoleEntree);
+        SQLQueryGlue.setRoleSortie(SQLQueryRoleSortie);
+        SQLQueryConnector.ajouterGlue(SQLQueryGlue);
 
-        // Création des bindings
-        BindingImpl portServToPortConfRequis = new BindingImpl(ServeurConfig, portRequisServeurLight, portConfigRequis);
-        BindingImpl portConfRequisToPortCMRequis = new BindingImpl(ServeurConfig, externalSocketCalled, portConfigRequis);
+        // ============================================================================== Création du composant Database
+        Composant database = new Database(serveurConfig);
+        PortInterneFourni securityManagement = new PortInterneFourni(database);
+        PortInterneRequis querying = new PortInterneRequis(database);
+        database.addPort(securityManagement);
+        database.addPort(querying);
 
-        // Création des attachements ServeurConfig
-        Attachement DBQueryAttachement = new AttachementImpl(ServeurConfig, DBQuery, SQLQueryRoleEntree);
+        // ======================================================================== Création du connecteur SecurityQuery
+        Connector securityQuery = new ConnectorImpl(serveurConfig);
+        Glue securityQueryGlue = new GlueImpl(securityQuery);
+        CalledRole securityQueryRoleEntree = new CalledRole(securityQueryGlue);
+        CallerRole securityQueryRoleSortie = new CallerRole(securityQueryGlue);
+        securityQueryGlue.setRoleEntree(securityQueryRoleEntree);
+        securityQueryGlue.setRoleSortie(securityQueryRoleSortie);
+        securityQuery.ajouterGlue(securityQueryGlue);
 
-        // Ajout des composants de la configuration Serveur
-        ServeurConfig.addPortConfiguration(portConfigFourni);
-        ServeurConfig.addPortConfiguration(portConfigRequis);
-        ServeurConfig.addElement(connectionManager);
-        ServeurConfig.addElement(portConfRequisToPortCMRequis);
+        // ======================================================================================= Création des bindings
+        BindingImpl portServToPortConfRequis = new BindingImpl(serveurConfig, portRequisServeurLight, portConfigRequis);
+        BindingImpl portConfRequisToPortCMRequis = new BindingImpl(serveurConfig, externalSocketCalled, portConfigRequis);
+
+        // ===================================================================== Création des attachements ServeurConfig
+        Attachement DBQueryAttachement = new AttachementImpl(serveurConfig, DBQuery, SQLQueryRoleEntree);
+        Attachement queryingAttachement = new AttachementImpl(serveurConfig, querying, SQLQueryRoleSortie);
+        Attachement securityManagementAttachement = new AttachementImpl(serveurConfig, securityManagement, securityQueryRoleEntree);
+
+        // ============================================================ Ajout des composants de la configuration Serveur
+        serveurConfig.addPortConfiguration(portConfigFourni);
+        serveurConfig.addPortConfiguration(portConfigRequis);
+        serveurConfig.addElement(connectionManager);
+        serveurConfig.addElement(portConfRequisToPortCMRequis);
+        serveurConfig.addElement(SQLQueryConnector);
+        serveurConfig.addElement(DBQueryAttachement);
+        serveurConfig.addElement(database);
+        serveurConfig.addElement(queryingAttachement);
+        serveurConfig.addElement(securityManagementAttachement);
 
         // ============================================================== Ajout des elements dans la configuration BigCS
         BigCS.addElement(client);
@@ -121,7 +148,7 @@ public class LauncherServeurConfiguration {
         BigCS.addElement(RPCToClient);
         BigCS.addElement(RPCToServeur);
         BigCS.addElement(ServeurToRPC);
-        BigCS.addElement(ServeurConfig);
+        BigCS.addElement(serveurConfig);
         BigCS.addElement(portServToPortConfRequis);
 
         // Et maintenant on demande au client d'envoyer son message afin que le serveur lui réponde, la suite dans les traces !
