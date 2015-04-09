@@ -195,7 +195,7 @@ public abstract class Configuration implements Element {
         result = new ArrayList<>();
 
         // Equivalent à un foreach sur les éléments, nouveau depuis Java 1.8
-        this.elements.stream().filter(item -> (item.getClass() == type)).forEach(item -> {
+        this.elements.stream().filter(item -> item.getClass() == type).forEach(item -> {
             result.add(item);
         });
         return result;

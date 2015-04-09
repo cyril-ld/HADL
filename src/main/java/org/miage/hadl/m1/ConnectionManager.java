@@ -26,20 +26,16 @@ public class ConnectionManager extends Composant {
         PortInterne portEnvoi;
 
         for (PortInterne item : this.ports) {
-            if (sender.getClass() == ExternalSocketRequis.class) {
-                if (item.getClass() == PortInterneFourni.class) {
-                    portEnvoi = (PortInterneFourni) item;
-                    System.out.println("[CONNECTION MANAGER] Je suis un ConnectionManager, je transfère le message à mon port fourni !");
-                    portEnvoi.transmettreMessage(p_sMessage);
-                    break;
-                }
-            } else if (sender.getClass() == PortInterneRequis.class) {
-                if (item.getClass() == ExternalSocketFourni.class) {
-                    System.out.println("[CONNECTION MANAGER] Je suis un ConnectionManager, je transfère le message à mon socket appelant !");
-                    portEnvoi = item;
-                    portEnvoi.transmettreMessage(p_sMessage);
-                    break;
-                }
+            if (sender.getClass() == ExternalSocketRequis.class && item.getClass() == PortInterneFourni.class) {
+                portEnvoi = (PortInterneFourni) item;
+                System.out.println("[CONNECTION MANAGER] Je suis un ConnectionManager, je transfère le message à mon port fourni !");
+                portEnvoi.transmettreMessage(p_sMessage);
+                break;
+            } else if (sender.getClass() == PortInterneRequis.class && item.getClass() == ExternalSocketFourni.class) {
+                System.out.println("[CONNECTION MANAGER] Je suis un ConnectionManager, je transfère le message à mon socket appelant !");
+                portEnvoi = item;
+                portEnvoi.transmettreMessage(p_sMessage);
+                break;
             }
         }
     }
