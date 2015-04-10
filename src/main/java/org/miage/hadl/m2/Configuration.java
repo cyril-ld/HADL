@@ -198,6 +198,14 @@ public abstract class Configuration implements Element {
         this.elements.stream().filter(item -> item.getClass() == type).forEach(item -> {
             result.add(item);
         });
+        /**
+         * for (Element item : this.elements) {
+         * if (item.getClass() == type) {
+         * result.add(item);
+         * }
+         * }
+         * return result;
+         */
         return result;
     }
 
